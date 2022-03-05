@@ -1,0 +1,19 @@
+{
+  "name": "manage",
+  "version": "1.0.0",
+  "description": "my node program about some config, about some functions. github give me this name: animated-umbrella~~",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WizardWithSword/animated-umbrella.git"
+  },
+  "author": "wizardwithsword",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WizardWithSword/animated-umbrella/issues"
+  },
+  "homepage": "https://github.com/WizardWithSword/animated-umbrella#readme"
+}
