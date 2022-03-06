@@ -1,6 +1,9 @@
 const Router = require('koa-router');
 const dbApi = require('../database');
 const router = new Router();
+var jwt = require('jsonwebtoken');
+const config = require('../config/index')
+
 
 router.get('/login', (ctx, next) => {
   // ctx.router available
@@ -10,14 +13,34 @@ router.get('/h5/index', (ctx, next) => {
   // ctx.router available
   ctx.body = JSON.stringify({code:0, data:'这是一个h5请求'})
 })
-router.get('/manage/qrcode/list', (ctx, next) => {
+router.post('/manage/login', (ctx, next) => {
+  console.log('登录开始')
+  const data = ctx.request.body
+
+  var token = jwt.sign({
+    data:{
+      username: data.username,
+    },
+    exp: Math.floor(Date.now() / 1000) + config.jwtExp,
+  }, config.jwtSec);
+
+  ctx.body = {
+      username:data.username,
+      code:0,
+      token
+  }
+  next()
+  console.log('登录成功')
+})
+
+router.get('/api/manage/qrcode/list', (ctx, next) => {
   console.log('请求列表')
   ctx.body = {code: 0, data: [{id:2, name: '一个'}]}
   next()
   console.log('请求列表结束')
 })
 
-router.post('/manage/user/add', async (ctx, next) => {
+router.post('/api/manage/user/add', async (ctx, next) => {
   console.log('请求的添加的用户信息', ctx.request.body)
   const data = ctx.request.body
   await dbApi.getUser({name: data.name}).then((doc)=> {

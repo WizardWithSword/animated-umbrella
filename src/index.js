@@ -3,7 +3,32 @@ const app = new Koa();
 const BodyParser = require('koa-bodyparser');
 const bodyparser= new BodyParser();
 const router = require('./router/index')
-const serve = require('koa-static');
+const static = require('koa-static');
+const mount = require('koa-mount');
+var jwt = require('koa-jwt');
+// const jwtnokoa = require('jsonwebtoken')
+const config = require('./config/index')
+
+// Unprotected middleware
+app.use(function(ctx, next){
+  if (ctx.url.match(/^\/login/)) {
+    console.log('-------->>> some other ')
+    ctx.body = 'un safe route'
+  } else {
+    return next().catch((err) => {
+      console.log('一个异常的请求: ', JSON.stringify(err))
+      if (401 == err.status) {
+        ctx.status = 401;
+        ctx.body = {code: 401, msg: 'need login'};
+      } else {
+        ctx.status = 200;
+        ctx.body = {code: -1, msg: 'you may need login'}
+      }
+    });
+  }
+});
+
+app.use(jwt({ secret: config.jwtSec}).unless({ path: [/^\/h5/, /^\/manage/] }));
 
 app.use(async (ctx, next) => {
   console.log('日志系统:开始记录')
@@ -14,13 +39,16 @@ app.use(async (ctx, next) => {
 });
 
 app.use(bodyparser);
-// app.use(bodyparser.json({ type: 'application/*+json' }))
 
 app.use(router.routes())
   .use(router.allowedMethods());
-app.use(serve(__dirname + '/manage'));
-app.use(serve(__dirname + '/fe'));
 
+const h5 = new Koa()
+const manage = new Koa()
+h5.use(static(__dirname + '/fe'));
+manage.use(static(__dirname + '/manage'));
+app.use(mount('/h5', h5));
+app.use(mount('/manage', manage));
 
 app.listen(3000);
 console.log('项目开始启动中...')

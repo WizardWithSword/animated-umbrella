@@ -1,0 +1,17 @@
+登录页面
+<button onclick="login()">点击登录</button>
+<script>
+  function login(){
+    fetch('/manage/login',{method: 'POST', body:{
+      name: 'manage super admin',
+      pwd: 'password'
+    }}).then(res => {
+      return res.json()
+    }).then(res => {
+      console.log('登录的结果', res)
+      if(res.code === 0) {
+        window.localStorage.setItem('token', res.token)
+      }
+    })
+  }
+</script>

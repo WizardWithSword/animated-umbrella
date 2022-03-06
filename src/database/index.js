@@ -2,7 +2,6 @@ const Datastore = require('nedb')
 const db = {}
 const path = require('path')
 
-console.log('___dirname', path)
 db.user = new Datastore({ filename: path.resolve(__dirname, '../../data/user.db'), autoload: true });
 db.qrcode = new Datastore({ filename: path.resolve(__dirname, '../../data/qrcode.db'), autoload: true });
 
