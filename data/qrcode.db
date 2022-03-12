@@ -1,5 +1,0 @@
-{"name":"二维码名字2","company":"所属公司","meetingRooms":"所属会议室","config":[{"type":"btn","title":"按钮提示","name":"按钮名称"}],"createTime":{"$$date":1647062430374},"_id":"O8YVqiS6GHJpIR0v"}
-{"name":"二维码名字","company":"所属公司","meetingRooms":"所属会议室","_id":"RRfHHaHUjeAlpcyZ"}
-{"name":"二维码名字3","company":"所属公司3","meetingRooms":"所属会议室3","config":[{"type":"btn","title":"按钮提示","name":"按钮名称"}],"createTime":{"$$date":1647062469804},"_id":"eURh610ScccPBQxT"}
-{"name":"二维码名字4","company":"所属公司4","meetingRooms":"所属会议室4","config":[{"type":"btn","title":"按钮提示","name":"按钮名称"}],"createTime":{"$$date":1647062510287},"_id":"xCdMNRme46St1yFn"}
-{"name":"新的名字","company":"所属公司4","meetingRooms":"所属会议室4","config":[{"type":"btn","title":"按钮提示","name":"按钮名称"}],"createTime":{"$$date":1647062510287},"_id":"xCdMNRme46St1yFn","updateTime":{"$$date":1647062942987}}
