@@ -6,17 +6,16 @@ const router = require('./router/index')
 const static = require('koa-static');
 const mount = require('koa-mount');
 var jwt = require('koa-jwt');
-// const jwtnokoa = require('jsonwebtoken')
-const config = require('./config/index')
 
+const config = require('./config/index')
 // Unprotected middleware
 app.use(function(ctx, next){
   if (ctx.url.match(/^\/login/)) {
-    console.log('-------->>> some other ')
-    ctx.body = 'un safe route'
+    console.log('-------->>> some other route access, maybe a hacker there')
+    ctx.body = 'please input your username and password'
   } else {
     return next().catch((err) => {
-      console.log('一个异常的请求: ', JSON.stringify(err))
+      console.log('一个异常的请求: ', err.status)
       if (401 == err.status) {
         ctx.status = 401;
         ctx.body = {code: 401, msg: 'need login'};

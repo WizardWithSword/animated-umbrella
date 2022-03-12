@@ -4,64 +4,42 @@ const router = new Router();
 var jwt = require('jsonwebtoken');
 const config = require('../config/index')
 
+// 用户模块
+const userRouter = require('./user.js')
+userRouter(router)
 
-router.get('/login', (ctx, next) => {
-  // ctx.router available
-  ctx.body = 'my router is effective'
-})
-router.get('/h5/index', (ctx, next) => {
-  // ctx.router available
-  ctx.body = JSON.stringify({code:0, data:'这是一个h5请求'})
-})
-router.post('/manage/login', (ctx, next) => {
-  console.log('登录开始')
+// 二维码模块
+const qrCode = require('./qrcode')
+qrCode(router)
+
+router.post('/manage/login', async (ctx, next) => {
   const data = ctx.request.body
-
-  var token = jwt.sign({
-    data:{
-      username: data.username,
-    },
-    exp: Math.floor(Date.now() / 1000) + config.jwtExp,
-  }, config.jwtSec);
-
-  ctx.body = {
-      username:data.username,
-      code:0,
-      token
-  }
-  next()
-  console.log('登录成功')
-})
-
-router.get('/api/manage/qrcode/list', (ctx, next) => {
-  console.log('请求列表')
-  ctx.body = {code: 0, data: [{id:2, name: '一个'}]}
-  next()
-  console.log('请求列表结束')
-})
-
-router.post('/api/manage/user/add', async (ctx, next) => {
-  console.log('请求的添加的用户信息', ctx.request.body)
-  const data = ctx.request.body
-  await dbApi.getUser({name: data.name}).then((doc)=> {
-    console.log('查询的结果', doc)
-    if(doc && doc.length > 0) {
-      console.log('已有记录，不再添加')
-      ctx.body = {cdoe: 100, msg: 'user exists!'}
+  console.log('登录开始', data)
+  await dbApi.getUser({
+    name: data.name,
+    pwd:data.pwd
+  }).then(doc => {
+    console.log('查询到的用户结果', doc)
+    if(doc.length) {
+      var token = jwt.sign({
+        data:{
+          name: data.name,
+        },
+        exp: Math.floor(Date.now() / 1000) + config.jwtExp,
+      }, config.jwtSec);
+    
+      ctx.body = {
+          name:data.name,
+          code:0,
+          token
+      }
+      console.log('登录成功')
     } else {
-      dbApi.addUser({name: data.name, pwd: data.pwd}).then((doc2) => {
-        console.log('添加的结果', doc2)
-        if(doc2?._id) {
-          ctx.body = {cdoe: 0, msg: 'user add success'}
-        } else {
-          ctx.body = {cdoe: 201, msg: 'user add fail! try again'}
-        }
-      })
+      ctx.body = {code: 1, msg: '账号密码错误，请重试'}
+      console.log('登录失败')
     }
-  }).catch(err => {
-    console.log('查询失败')
-    ctx.body = {cdoe: 200, msg: 'find user error'}
   })
+  next()
 })
 
 module.exports = router

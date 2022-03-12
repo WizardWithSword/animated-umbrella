@@ -2,10 +2,16 @@
 <button onclick="login()">点击登录</button>
 <script>
   function login(){
-    fetch('/manage/login',{method: 'POST', body:{
-      name: 'manage super admin',
-      pwd: 'password'
-    }}).then(res => {
+    fetch('/manage/login', {
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json',
+      },
+      body:JSON.stringify({
+        name: 'admin',
+        pwd: 'disaien123456'
+      })
+    }).then(res => {
       return res.json()
     }).then(res => {
       console.log('登录的结果', res)
