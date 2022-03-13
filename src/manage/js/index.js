@@ -92,16 +92,17 @@ const Api = function (url, data) {
 
 function getQrcodeList (){
   Api('/api/qrcode/list', {
-    page: 2,
+    page: 1,
   }).then(res => {
     console.log('获得二维码列表结果', res)
   })
 }
 function addQrcode (){
   Api('/api/qrcode/add', {
-    name: '二维码名字4',
-    company: '所属公司4',
-    meetingRooms: '所属会议室4',
+    name: '二维码名字5',
+    secret: 'this is mima',
+    company: '所属公司5',
+    meetingRooms: '所属会议室',
     config: [{type: 'btn', title: '按钮提示', name: '按钮名称'}]
   }).then(res => {
     console.log('新增二维码列表结果', res)
@@ -124,8 +125,16 @@ function updateQrcode (id){
   })
 }
 function getH5QrcodeDetail(id) {
-  Api('/api/qrcode/detail', {
+  Api('/apih5/qrcode/detail', {
     id: id
+  }).then(res => {
+    console.log('获得二维码列表结果', res)
+  })
+}
+function getH5QrcodeDetailBySec(id) {
+  Api('/apih5/qrcode/detailBySrc', {
+    id: id,
+    secret: 'this is mima'
   }).then(res => {
     console.log('获得二维码列表结果', res)
   })

@@ -15,13 +15,13 @@ app.use(function(ctx, next){
     ctx.body = 'please input your username and password'
   } else {
     return next().catch((err) => {
-      console.log('一个异常的请求: ', err.status)
+      console.log('一个异常的请求: ', err)
       if (401 == err.status) {
         ctx.status = 401;
         ctx.body = {code: 401, msg: 'need login'};
       } else {
         ctx.status = 200;
-        ctx.body = {code: -1, msg: 'you may need login'}
+        ctx.body = {code: -1, msg: err}
       }
     });
   }

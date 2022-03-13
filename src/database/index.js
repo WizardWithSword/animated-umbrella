@@ -66,7 +66,7 @@ dbApi.getQrCodeList = (params) => {
   delete data.page
   delete data.pageIndex
   return new Promise(function(resolve, reject) {
-    db.qrcode.find(data).sort({ createTime: 1 }).skip(skip).limit(pageIndex).exec(function (err, doc) {
+    db.qrcode.find(data).sort({ createTime: -1 }).skip(skip).limit(pageIndex).exec(function (err, doc) {
       // docs is [doc3, doc1]
       if(err) {
         reject(err)

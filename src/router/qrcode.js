@@ -1,4 +1,16 @@
 const dbApi = require('../database');
+
+// 处理二维码详情，如果有密码，那么仅返回部分字段
+function dealQrcodeDetail(detail) {
+  if(detail.secret){
+    return {
+      id: detail._id,
+      needPassword: true, // 该二维码需要密码
+      name: detail.name
+    }
+  }
+  return detail
+}
 const init = function(router){
   // 获取二维码列表
   router.post('/api/qrcode/list', async (ctx, next)=> {
@@ -20,6 +32,7 @@ const init = function(router){
       _id: id
     }).then(doc => {
       console.log('二维码详情是', doc)
+      // const newData = dealQrcodeDetail(doc)
       ctx.body = {code: 0, data: doc, msg: 'success'}
     })
   })
@@ -55,9 +68,34 @@ const init = function(router){
   })
 
   // h5接口，获取二维码详情
-  router.get('/apih5/qrcode/detail', async (ctx, next) => {
+  router.post('/apih5/qrcode/detail', async (ctx, next) => {
     const data = ctx.request.body
     const { id } = data
+    console.log('开始获取详情, H5下的二维码')
+    await dbApi.getQrCodeDetail({
+      _id: id
+    }).then(doc => {
+      console.log('二维码详情是', doc)
+      const newData = dealQrcodeDetail(doc)
+      ctx.body = {code: 0, data: newData, msg: 'success'}
+    })
+  })
+  // h5接口，获取二维码详情
+  router.post('/apih5/qrcode/detailBySrc', async (ctx, next) => {
+    const data = ctx.request.body
+    const { id, secret } = data
+    await dbApi.getQrCodeDetail({
+      _id: id
+    }).then(doc => {
+      console.log('二维码详情是', doc)
+      if(doc.secret === secret) {
+        // const newData = dealQrcodeDetail(doc)
+        delete doc.secret
+        ctx.body = {code: 0, data: doc, msg: 'success'}
+      } else {
+        ctx.body = {code: 10020, msg: 'wrong secret'}
+      }
+    })
   })
 }
 module.exports = init
