@@ -1,0 +1,22 @@
+管理后台
+<button onclick="adduser()">添加用户</button>
+<button onclick="edituser()">编辑用户</button>
+<button onclick="resetuser()">重置用户名密码</button>
+<button onclick="deleteuser()">删除用户</button>
+
+<hr>
+<button onclick="getQrcodeList()">二维码列表</button>
+<button onclick="addQrcode()">添加二维码</button>
+<button onclick="updateQrcode('xCdMNRme46St1yFn')">编辑二维码</button>
+<button onclick="getQrcodeDetail('xCdMNRme46St1yFn')">获取二维码详情</button>
+<p>H5页面</p>
+<button onclick="getH5QrcodeDetail('xCdMNRme46St1yFn')">H5获取详情-无密码</button>
+<button onclick="getH5QrcodeDetail('0F2AxMbCrdN6IOoV')">H5获取详情-有密码</button>
+<button onclick="getH5QrcodeDetailBySec('0F2AxMbCrdN6IOoV')">使用密码获取二维码详情</button>
+
+
+<hr>
+<button onclick="sendmsg()">发送消息到中控</button>
+<script src="./js/mqtt.js"></script>
+<script src="./js/index.js"></script>
+<script src="./js/client2.js"></script>

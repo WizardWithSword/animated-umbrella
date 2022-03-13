@@ -5,11 +5,13 @@ const bodyparser= new BodyParser();
 const router = require('./router/index')
 const static = require('koa-static');
 const mount = require('koa-mount');
-var jwt = require('koa-jwt');
+const jwt = require('koa-jwt');
+var mosca = require('mosca')
 
 const config = require('./config/index')
 // Unprotected middleware
 app.use(function(ctx, next){
+  // console.log('本次链接的url', ctx.req)
   if (ctx.url.match(/^\/login/)) {
     console.log('-------->>> some other route access, maybe a hacker there')
     ctx.body = 'please input your username and password'
@@ -27,7 +29,7 @@ app.use(function(ctx, next){
   }
 });
 
-app.use(jwt({ secret: config.jwtSec}).unless({ path: [/^\/h5/, /^\/manage/] }));
+// app.use(jwt({ secret: config.jwtSec}).unless({ path: [/^\/h5/, /^\/manage/, /^\/favicon/] }));
 
 app.use(async (ctx, next) => {
   console.log('日志系统:开始记录')
@@ -49,5 +51,47 @@ manage.use(static(__dirname + '/manage'));
 app.use(mount('/h5', h5));
 app.use(mount('/manage', manage));
 
+var ascoltatore = {
+  //using ascoltatore
+  type: 'mongo',
+  url: 'mongodb://localhost:27017/mqtt',
+  pubsubCollection: 'ascoltatori',
+  mongo: {}
+};
+
+var settings = {
+  port: 1883,
+  maxInflightMessages: 10240,
+  http: {
+    port: 1884,
+    bundle: true,
+    static: './' 
+  },
+  // backend: ascoltatore
+};
+
+const AllClient = {}
+
+var MQTTserver = new mosca.Server(settings);
+MQTTserver.on('clientConnected', function(client) {
+  console.log('client connected', client.id, client);
+  AllClient[client.id] = client
+});
+
+// fired when a message is received
+MQTTserver.on('published', function(packet) {
+  const topic = packet.topic
+  const msg = packet.payload
+  console.log('Published', packet.topic, packet.payload);
+});
+
+MQTTserver.on('ready', mqttReady);
+
+// fired when the mqtt server is ready
+function mqttReady() {
+  console.log('Mosca server is up and running');
+}
+// MQTTserver.attachHttpServer(app)
+
 app.listen(3000);
-console.log('项目开始启动中...')
+console.log('网页项目开始启动中...')
