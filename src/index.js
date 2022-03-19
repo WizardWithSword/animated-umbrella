@@ -7,6 +7,7 @@ const static = require('koa-static');
 const mount = require('koa-mount');
 const jwt = require('koa-jwt');
 var mosca = require('mosca')
+const fs = require('fs')
 
 const config = require('./config/index')
 // Unprotected middleware
@@ -46,8 +47,27 @@ app.use(router.routes())
 
 const h5 = new Koa()
 const manage = new Koa()
-h5.use(static(__dirname + '/fe'));
-manage.use(static(__dirname + '/manage'));
+h5.use(static(__dirname + '/fe', {
+  index: 'index.html'
+}));
+h5.use(async function (ctx, next){
+  if(ctx.response.status === 404) {
+    const html = fs.readFileSync(__dirname + '/fe/index.html', "binary");
+    ctx.body = html;
+  }
+  next()
+})
+manage.use(static(__dirname + '/manage', {
+  index: 'index.html'
+}));
+manage.use(async function (ctx, next){
+  if(ctx.response.status === 404) {
+    const html = fs.readFileSync(__dirname + '/manage/index.html', "binary");
+    ctx.body = html;
+  }
+  next()
+})
+
 app.use(mount('/h5', h5));
 app.use(mount('/manage', manage));
 

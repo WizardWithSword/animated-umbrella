@@ -67,12 +67,10 @@ dbApi.getQrCodeList = (params) => {
   delete data.pageSize
   return new Promise(function(resolve, reject) {
     db.qrcode.find(data).sort({ createTime: -1 }).skip(skip).limit(pageSize).exec(function (err, doc) {
-      // docs is [doc3, doc1]
       if(err) {
         reject(err)
       } else{
         db.qrcode.count(data, function (err, count) {
-          // count equals to 3
           resolve({doc, count})
         });
       }

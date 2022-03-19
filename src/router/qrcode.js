@@ -20,7 +20,7 @@ const init = function(router){
       page: page || 1,
       pageSize: pageSize || 3
     }).then(res => {
-      console.log('本地的二维码列表是', res)
+      // console.log('本地的二维码列表是', res)
       ctx.body = {code: 0, data: res.doc, total: res.count, msg: 'success'}
     })
   })
@@ -31,7 +31,7 @@ const init = function(router){
     await dbApi.getQrCodeDetail({
       _id: id
     }).then(doc => {
-      console.log('二维码详情是', doc)
+      // console.log('二维码详情是', doc)
       // const newData = dealQrcodeDetail(doc)
       ctx.body = {code: 0, data: doc, msg: 'success'}
     })
