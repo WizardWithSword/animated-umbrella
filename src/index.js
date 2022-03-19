@@ -29,7 +29,7 @@ app.use(function(ctx, next){
   }
 });
 
-// app.use(jwt({ secret: config.jwtSec}).unless({ path: [/^\/h5/, /^\/manage/, /^\/favicon/] }));
+app.use(jwt({ secret: config.jwtSec}).unless({ path: [/^\/h5/, /^\/manage/, /^\/favicon/, /^\/api\/manage\/login/] }));
 
 app.use(async (ctx, next) => {
   console.log('日志系统:开始记录')
@@ -93,5 +93,5 @@ function mqttReady() {
 }
 // MQTTserver.attachHttpServer(app)
 
-app.listen(3000);
+app.listen(3100);
 console.log('网页项目开始启动中...')

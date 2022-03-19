@@ -12,7 +12,7 @@ userRouter(router)
 const qrCode = require('./qrcode')
 qrCode(router)
 
-router.post('/manage/login', async (ctx, next) => {
+router.post('/api/manage/login', async (ctx, next) => {
   const data = ctx.request.body
   console.log('登录开始', data)
   await dbApi.getUser({

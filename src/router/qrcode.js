@@ -15,13 +15,13 @@ const init = function(router){
   // 获取二维码列表
   router.post('/api/qrcode/list', async (ctx, next)=> {
     const data = ctx.request.body
-    const { page, pageIndex } = data
+    const { page, pageSize } = data
     await dbApi.getQrCodeList({
       page: page || 1,
-      pageIndex: pageIndex || 3
-    }).then(doc => {
-      console.log('本地的二维码列表是', doc)
-      ctx.body = {code: 0, data: doc, msg: 'success'}
+      pageSize: pageSize || 3
+    }).then(res => {
+      console.log('本地的二维码列表是', res)
+      ctx.body = {code: 0, data: res.doc, total: res.count, msg: 'success'}
     })
   })
   // 获取二维码详情

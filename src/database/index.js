@@ -60,18 +60,21 @@ dbApi.removeUser = (params) => {
 
 dbApi.getQrCodeList = (params) => {
   console.log('查询参数', params)
-  const {page, pageIndex} = params
-  const skip = (page - 1) * pageIndex
+  const {page, pageSize} = params
+  const skip = (page - 1) * pageSize
   const data = JSON.parse(JSON.stringify(params))
   delete data.page
-  delete data.pageIndex
+  delete data.pageSize
   return new Promise(function(resolve, reject) {
-    db.qrcode.find(data).sort({ createTime: -1 }).skip(skip).limit(pageIndex).exec(function (err, doc) {
+    db.qrcode.find(data).sort({ createTime: -1 }).skip(skip).limit(pageSize).exec(function (err, doc) {
       // docs is [doc3, doc1]
       if(err) {
         reject(err)
       } else{
-        resolve(doc)
+        db.qrcode.count(data, function (err, count) {
+          // count equals to 3
+          resolve({doc, count})
+        });
       }
     });
   })
