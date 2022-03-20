@@ -81,7 +81,7 @@ const init = function(router){
     })
   })
   // h5接口，获取二维码详情
-  router.post('/apih5/qrcode/detailBySrc', async (ctx, next) => {
+  router.post('/apih5/qrcode/detailBySec', async (ctx, next) => {
     const data = ctx.request.body
     const { id, secret } = data
     await dbApi.getQrCodeDetail({

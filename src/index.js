@@ -30,7 +30,7 @@ app.use(function(ctx, next){
   }
 });
 
-app.use(jwt({ secret: config.jwtSec}).unless({ path: [/^\/h5/, /^\/manage/, /^\/favicon/, /^\/api\/manage\/login/] }));
+app.use(jwt({ secret: config.jwtSec}).unless({ path: [/^\/h5/,/^\/apih5/, /^\/manage/, /^\/favicon/, /^\/api\/manage\/login/] }));
 
 app.use(async (ctx, next) => {
   console.log('日志系统:开始记录')
@@ -94,8 +94,9 @@ const AllClient = {}
 
 var MQTTserver = new mosca.Server(settings);
 MQTTserver.on('clientConnected', function(client) {
-  console.log('client connected', client.id, client);
+  console.log('client connected', client.id);
   AllClient[client.id] = client
+  // console.log('All client', AllClient)
 });
 
 // fired when a message is received
