@@ -52,7 +52,7 @@ h5.use(static(__dirname + '/fe', {
 }));
 h5.use(async function (ctx, next){
   if(ctx.response.status === 404) {
-    const html = fs.readFileSync(__dirname + '/fe/index.html', "binary");
+    const html = fs.readFileSync(__dirname + '/fe/index.html', "utf-8");
     ctx.body = html;
   }
   next()
@@ -62,7 +62,7 @@ manage.use(static(__dirname + '/manage', {
 }));
 manage.use(async function (ctx, next){
   if(ctx.response.status === 404) {
-    const html = fs.readFileSync(__dirname + '/manage/index.html', "binary");
+    const html = fs.readFileSync(__dirname + '/manage/index.html', "utf-8");
     ctx.body = html;
   }
   next()
