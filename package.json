@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./src/index.js",
-    "start":"pm2 start ./src/index.js",
+    "tmpdev": "node ./src/index.js",
+    "start": "pm2 start ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,15 +20,16 @@
   },
   "homepage": "https://github.com/WizardWithSword/animated-umbrella#readme",
   "dependencies": {
-    "jsonschema": "1.0.3",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
+    "koa-compress": "^5.1.0",
     "koa-jwt": "^4.0.3",
     "koa-mount": "^4.0.0",
     "koa-router": "^10.1.1",
     "koa-static": "^5.0.0",
     "mosca": "^2.8.3",
     "nedb": "^1.8.0",
-    "node-gyp": "^9.0.0"
+    "node-gyp": "^9.0.0",
+    "jsonschema": "1.2.6"
   }
 }
