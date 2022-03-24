@@ -8,6 +8,7 @@ const mount = require('koa-mount');
 const jwt = require('koa-jwt');
 var mosca = require('mosca')
 const fs = require('fs')
+const compress = require('koa-compress');
 
 const config = require('./config/index')
 // Unprotected middleware
@@ -42,12 +43,16 @@ app.use(async (ctx, next) => {
 
 app.use(bodyparser);
 
+const compressOptions = { threshold: 2048 };
+app.use(compress(compressOptions));
+
 app.use(router.routes())
   .use(router.allowedMethods());
 
 const h5 = new Koa()
 const manage = new Koa()
 h5.use(static(__dirname + '/fe', {
+  maxage: 24*60*60*1000,
   index: 'index.html'
 }));
 h5.use(async function (ctx, next){
@@ -58,6 +63,7 @@ h5.use(async function (ctx, next){
   next()
 })
 manage.use(static(__dirname + '/manage', {
+  maxage: 24*60*60*1000,
   index: 'index.html'
 }));
 manage.use(async function (ctx, next){
