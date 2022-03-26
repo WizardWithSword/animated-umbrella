@@ -65,6 +65,9 @@ dbApi.getQrCodeList = (params) => {
   const data = JSON.parse(JSON.stringify(params))
   delete data.page
   delete data.pageSize
+  data.delete = {
+    $ne: 1
+  }
   return new Promise(function(resolve, reject) {
     db.qrcode.find(data).sort({ createTime: -1 }).skip(skip).limit(pageSize).exec(function (err, doc) {
       if(err) {
@@ -79,6 +82,9 @@ dbApi.getQrCodeList = (params) => {
 }
 dbApi.getQrCodeDetail = (params) => {
   console.log('查询数据库参数', params)
+  params.delete = {
+    $ne: 1
+  }
   return new Promise(function(resolve, reject) {
     db.qrcode.findOne(params, (err, doc) => {
       if(err) {

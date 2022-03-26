@@ -108,6 +108,15 @@ function addQrcode (){
     console.log('新增二维码列表结果', res)
   })
 }
+
+function delQrcodeDetail (id){
+  Api('/api/qrcode/delete', {
+    id: id
+  }).then(res => {
+    console.log('删除二维码列表结果', res)
+  })
+}
+
 function getQrcodeDetail (id){
   Api('/api/qrcode/detail', {
     id: id
