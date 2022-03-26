@@ -109,7 +109,8 @@ MQTTserver.on('clientConnected', function(client) {
 MQTTserver.on('published', function(packet) {
   const topic = packet.topic
   const msg = packet.payload
-  console.log('Published', packet.topic, packet.payload);
+  const msgStr = packet.payload.toString()
+  console.log('Published', packet.topic, packet.payload, msgStr);
 });
 
 MQTTserver.on('ready', mqttReady);
