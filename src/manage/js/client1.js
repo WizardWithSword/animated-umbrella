@@ -1,9 +1,10 @@
+
 let client = mqtt.connect('mqtt://127.0.0.1', {
   clientId: 'userA',
   port: 1884
 })
 
-console.log('客户端链接mqtt', client)
+console.log('client1.js 客户端链接mqtt', client)
 
 client.on('connect', function () {
   client.subscribe('userA', function (err) {
@@ -28,4 +29,12 @@ client.on('message', function (topic, message) {
 
 function sendmsg() {
   client.publish('wheather', 'Asaid: how is the weather')
+}
+
+function sendfile() {
+  var a = new ArrayBuffer(8)
+  var view = new Int8Array(a)
+  view.set([1,2,3],3)
+  console.log('a', a, a.toString())
+  client.publish('wheather', a)
 }

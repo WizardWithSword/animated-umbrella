@@ -8,6 +8,7 @@ const mount = require('koa-mount');
 const jwt = require('koa-jwt');
 var mosca = require('mosca')
 const fs = require('fs')
+const path = require('path')
 const compress = require('koa-compress');
 
 const config = require('./config/index')
@@ -107,10 +108,29 @@ MQTTserver.on('clientConnected', function(client) {
 
 // fired when a message is received
 MQTTserver.on('published', function(packet) {
+  // console.log('收到消息', packet)
   const topic = packet.topic
   const msg = packet.payload
   const msgStr = packet.payload.toString()
-  console.log('Published', packet.topic, packet.payload, msgStr);
+
+  if(packet.topic.indexOf('new/clients') !== -1) {
+    console.log('Published', '新用户链接进来了：', packet.payload);
+  } else if(packet.topic.indexOf('new/subscribes') !== -1) {
+    console.log('Published', '用户新监听话题：', packet.payload);
+  } else if(packet.topic.indexOf('new/unsubscribes') !== -1) {
+    console.log('Published', '用户取消监听话题：', packet.payload);
+  } else if(packet.topic.indexOf('disconnect/clients') !== -1) {
+    console.log('Published', '用户断开链接：', packet.payload);
+  } else {
+    console.log('Published 用户广播消息', packet.topic, packet.payload);
+  }
+});
+
+MQTTserver.on('error', function(packet) {
+  console.log('error消息', packet)
+});
+MQTTserver.on('close', function(packet) {
+  console.log('close消息', packet)
 });
 
 MQTTserver.on('ready', mqttReady);

@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/WizardWithSword/animated-umbrella#readme",
   "dependencies": {
+    "@koa/multer": "^3.0.0",
+    "jsonschema": "1.2.6",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "koa-compress": "^5.1.0",
@@ -28,8 +30,9 @@
     "koa-router": "^10.1.1",
     "koa-static": "^5.0.0",
     "mosca": "^2.8.3",
+    "mqtt": "^4.3.7",
+    "multer": "^1.4.5-lts.1",
     "nedb": "^1.8.0",
-    "node-gyp": "^9.0.0",
-    "jsonschema": "1.2.6"
+    "node-gyp": "^9.0.0"
   }
 }

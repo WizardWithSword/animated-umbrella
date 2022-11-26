@@ -1,8 +1,14 @@
 const Router = require('koa-router');
+const multer = require('@koa/multer');
+
 const dbApi = require('../database');
 const router = new Router();
 var jwt = require('jsonwebtoken');
 const config = require('../config/index')
+const upload = multer({
+  dest: './upload/'
+});
+
 
 // 用户模块
 const userRouter = require('./user.js')
@@ -11,6 +17,9 @@ userRouter(router)
 // 二维码模块
 const qrCode = require('./qrcode')
 qrCode(router)
+
+const fileDeal = require('./file')
+fileDeal(router, upload)
 
 router.post('/api/manage/login', async (ctx, next) => {
   const data = ctx.request.body

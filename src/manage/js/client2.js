@@ -3,7 +3,7 @@ let client = mqtt.connect('mqtt://127.0.0.1', {
   port: 1884
 })
 
-console.log('客户端链接mqtt', client)
+console.log('client2.js 客户端链接mqtt', client)
 
 client.on('connect', function () {
   client.subscribe('userB', function (err) {
